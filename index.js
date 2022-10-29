@@ -1,6 +1,6 @@
 "use strict";
-const pc = require("prompt-sync");
-const prompt = pc();
+// const pc = require("prompt-sync");
+// const prompt = pc();
 
 // default game scores
 let playerScore = 0
