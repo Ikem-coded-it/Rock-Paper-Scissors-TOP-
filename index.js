@@ -1,73 +1,69 @@
 "use strict";
-const pc = require("prompt-sync");
-const prompt = pc();
 
 // default game scores
 let playerScore = 0
 let computerScore = 0
 
 
+const resultDiv = document.getElementById('result');
+const scoreDiv = document.getElementById('score');
+
 // get random choice from computer
 const getComputerChoice = () => {
-    const choices = ["rock", "paper", "scissors"]
+    const choices = ["ROCK", "PAPER", "SCISSORS"]
     return choices[Math.floor(Math.random()*choices.length)];
 }
 
 
-// get players choice
-const getPlayerChoice = () => {
-    const choice = prompt("Shoot: ")
-    if (choice != "rock" &&
-        choice != "paper" &&
-        choice != "scissors"
-    ) {
-        console.log("Please choose between rock, paper and scissors")
-        return
-    }
-    return choice
-}
-
-
-// compare choices and decide winner
-const round = () => {
-    const playerChoice = getPlayerChoice();
-    const computerChoice = getComputerChoice();
-
-    if (playerChoice == "rock" && computerChoice == "scissors" ||
-        playerChoice == "paper" && computerChoice == "rock" ||
-        playerChoice == "scissors" && computerChoice == "paper"
-    ) {
-        console.log(`You win!, ${playerChoice} beats ${computerChoice}`)
-        playerScore += 1
-        console.log(`Your score is ${playerScore}`)
-    } else if (playerChoice == computerChoice) {   
-        console.log("It's a tie") 
-    } else {
-        console.log(`You lose!, ${computerChoice} beats ${playerChoice}`)
-        computerScore += 1
-        console.log(`Computer score is ${computerScore}`)
-    }
-}
-
-
-// run game 5 rounds
-const game = () => {
-    for (let i = 0; i < 5; i++) {
-        const gameRound = round();
-        if (gameRound) game()
-    };
-
-    announceFinalScore()
+// get players choice from button clicked
+const getPlayerChoice = (e) => {
+    const weapon = e.target.innerHTML;
+    return weapon;
 }
 
 
 // announce final score after five rounds
 const announceFinalScore = () => {
     if (playerScore > computerScore) {
-        console.log(`Congratulations, You won ${playerScore} out of 5 rounds`)
-        return
+        resultDiv.innerHTML = `Congratulations, You won ${playerScore} out of 5 rounds`;
+        scoreDiv.innerHTML = 'GAME OVER!';
+    } else {
+        resultDiv.innerHTML = `Boo hoo! Computer won ${computerScore} out of 5 rounds`;
+        scoreDiv.innerHTML = 'GAME OVER!';
     }
-    console.log(`Boo hoo! Computer won ${computerScore} out of 5 rounds`)
 }
 
-game();
+
+// compare choices and decide winner
+const round = (e) => {
+    const playerChoice = getPlayerChoice(e);
+    const computerChoice = getComputerChoice();
+
+    if (playerScore == 3 || computerScore == 3) {
+        announceFinalScore();
+        return;
+    } else if (playerChoice == "ROCK" && computerChoice == "SCISSORS" ||
+        playerChoice == "PAPER" && computerChoice == "ROCK" ||
+        playerChoice == "SCISSORS" && computerChoice == "PAPER"
+    ) {
+        resultDiv.innerHTML = `You win!, ${playerChoice} beats ${computerChoice}`;
+        playerScore += 1;
+        scoreDiv.innerHTML = `Your score is ${playerScore}`
+    } else if (playerChoice == computerChoice) {   
+        resultDiv.innerText = "It's a tie";
+        scoreDiv.innerHTML = null;
+    } else {
+        resultDiv.innerHTML = `You lose!, ${computerChoice} beats ${playerChoice}`;
+        computerScore += 1;
+        scoreDiv.innerHTML = `Computer score is ${computerScore}`;
+    }
+}
+
+// UI Selectors
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        round(e);
+    })
+})
