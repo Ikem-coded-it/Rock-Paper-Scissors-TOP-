@@ -35,7 +35,7 @@ const announceFinalScore = () => {
 
 
 // compare choices and decide winner
-const round = (e) => {
+function round(e) {
     const playerChoice = getPlayerChoice(e);
     const computerChoice = getComputerChoice();
 
@@ -44,12 +44,11 @@ const round = (e) => {
         return;
     } else if (playerChoice == "ROCK" && computerChoice == "SCISSORS" ||
         playerChoice == "PAPER" && computerChoice == "ROCK" ||
-        playerChoice == "SCISSORS" && computerChoice == "PAPER"
-    ) {
+        playerChoice == "SCISSORS" && computerChoice == "PAPER") {
         resultDiv.innerHTML = `You win!, ${playerChoice} beats ${computerChoice}`;
         playerScore += 1;
-        scoreDiv.innerHTML = `Your score is ${playerScore}`
-    } else if (playerChoice == computerChoice) {   
+        scoreDiv.innerHTML = `Your score is ${playerScore}`;
+    } else if (playerChoice == computerChoice) {
         resultDiv.innerText = "It's a tie";
         scoreDiv.innerHTML = null;
     } else {
